@@ -3,7 +3,11 @@ import GoogleProvider from "next-auth/providers/google";
 import DiscordProvider from "next-auth/providers/discord";
 import Auth0Provider from "next-auth/providers/auth0";
 
+import { MongoDBAdapter } from "@auth/mongodb-adapter"
+import client from "@/lib/mongodb";
+ 
 export default NextAuth({
+  adapter: MongoDBAdapter(client) as any,
   providers: [
     // OAuth authentication providers...
 
@@ -22,5 +26,8 @@ export default NextAuth({
       issuer: process.env.AUTH0_ISSUER
     })
   ],
-  secret:process.env.NEXTAUTH_SECRET
+  secret:process.env.NEXTAUTH_SECRET,
+  session:{
+    strategy:'jwt'
+  }
 });
